@@ -1,5 +1,81 @@
-Sasha, testing
+CLMA Summer 2010
+Project "Bitext Miner"
+Alexander Shchetnikov
 
-Roger that, thanks.
+1. Tasks
+2. Crawling websites
+3. Extracting bitext
+4. Directories
 
-I still can't figure out how codes are added. I created a new gist (a sample Java code) but I don't know how to connect it to the project. Exploring...
+1. Tasks
+
+The goal of the project is to crawl websites containing English text with Russian translations, 
+to extract such bitext data and postprocess it.
+
+2. Crawling websites
+
+As initial seeds, four websites were chosen for crawling:
+
+http://usefulenglish.ru
+http://englishouse.ru
+http://www.proz.com
+http://homeenglish.ru
+
+They appeared to be most informative and they seemed to have maps favourable for processing.
+Two open source software were considered for crawling: Nutch and Wget. Wget appeared to be
+most suitable - because of its simplicity and crawling output options.
+
+The two Wget commands were used:
+	wget -i file (to download URLs specified in the file)
+	wget -r -l1 -np http://page1/page2/ (to download recursively all URLs, 1 level down from page2)
+Minor modification of these commands were tested (increasing level of download, adding option -w 5,
+which is 5 seconds pause between retrievals, - useful to crawl http://www.proz.com which has 
+retrievals per time limitations).
+
+Downloaded URLs were organized into folders corresponding each website. Some files were put directly
+in the folder, some files, as a result of a recursive download, were put in a tree of subfolders.
+
+Scripts for crawling are: crawl_englishouse_homeenglish.sh, crawl_proz_usefulenglish.sh - they require
+a file with urls as an argument (crawl_englishouse_homeenglish.sh urls_englishouse.txt), 
+the files with urls are provided.
+
+
+3. Extracting bitext
+
+Processing downloaded files for bitext data had some challenges:
+- Encoding of pages differed - two sites had UTF-8, the other two sites had windows-1251.
+- each site had its own structure, bitext was placed differently
+	Examples:
+		<td><p>bitext_english</p></td> (englishouse.ru)
+		<td><p>bitext_russian</p></td> (englishouse.ru)
+		<p>bitext_english</p>(usefulenglish.ru)
+		<p>bitext_russian</p>(usefulenglish.ru)
+		<td>bitext_english</td>(homeenglish.ru)
+		<td>bitext_russian</td>(homeenglish.ru)
+		....<tr class=...>bitext_english<....<tr class=...>bitext_russian<....(www.prox.com)
+The structure differed also within each site (for example, one page has a 2-column table, 
+another page of the same site has a 3-column table). 
+- downloaded files were stored in trees with different levels.
+
+To extract as much data and, at the same time, keep the code as simple as possible, I wrote four 
+different code - one for each website. If needed, these 4 codes could be combined.
+
+Codes are written in Java, Filter.java, Filter1.java, Filter2.java, Filter3.java. 
+All of them accept three files as input - path to the folder, name of the file for english output
+and name of the file for russian output. Some codes create working files (.txt) for 
+intermediate processing.
+
+Processing of the four sites yielded between 30 and 32 thousand bilingual pairs. "Bad" data 
+(swapped languages, incorrect translation, no content, etc.) is estimated to be about 1% of it, 
+and it is produced mostly after processing www.proz.com.
+
+4. Directories
+
+On patas directories are arranged in the following order (I'll try to upload them to github by Sunday evening):
+
+The root directory is /home2/shchea/project. It contains scripts for crawling, code projects folders
+(Filter, Filter1, Filter2, Filter3), urls files (input for crawling), folders with downloaded raw data 
+(englishouse.ru, homeenglish.ru, usefulenglish.ru, www.proz.com), output_data folder (with bitext data
+for each site in four subfolders - output_data/englishouse.ru, output_data/homeenglish.ru, etc.; 
+I named each file with English data as bitext_en.txt and each file with Russian data as bitext_ru.txt);
+and this README file.
