@@ -71,7 +71,7 @@ and it is produced mostly after processing www.proz.com.
 
 4. Directories
 
-On patas directories are arranged in the following order (I'll try to upload them to github by Sunday evening):
+On patas directories are arranged in the following order:
 
 The root directory is /home2/shchea/project. It contains scripts for crawling, code projects folders
 (Filter, Filter1, Filter2, Filter3), urls files (input for crawling), folders with downloaded raw data 
@@ -79,3 +79,10 @@ The root directory is /home2/shchea/project. It contains scripts for crawling, c
 for each site in four subfolders - output_data/englishouse.ru, output_data/homeenglish.ru, etc.; 
 I named each file with English data as bitext_en.txt and each file with Russian data as bitext_ru.txt);
 and this README file.
+
+On github the folders are:
+- BitextMiner is the root, containing README, files with seed urls and folders input/, output/ and src/
+- input/ has 4 subfolders with crawled data from the four websites
+- output/ has also 4 subfolders with processed bitext data
+- src/ contains scripts and subfolders with codes (Filter, Filter1, Filter2, Filter3)
+
